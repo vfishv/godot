@@ -36,7 +36,8 @@
 
 #include "extensions/openxr_eye_gaze_interaction.h"
 #include "extensions/openxr_hand_interaction_extension.h"
-#include "thirdparty/openxr/include/openxr/openxr.h"
+
+#include <openxr/openxr.h>
 
 void OpenXRInterface::_bind_methods() {
 	// lifecycle signals
@@ -299,10 +300,7 @@ void OpenXRInterface::_load_action_map() {
 						continue;
 					}
 
-					PackedStringArray paths = xr_binding->get_paths();
-					for (int k = 0; k < paths.size(); k++) {
-						openxr_api->interaction_profile_add_binding(ip, action->action_rid, paths[k]);
-					}
+					openxr_api->interaction_profile_add_binding(ip, action->action_rid, xr_binding->get_binding_path());
 				}
 
 				// Now submit our suggestions

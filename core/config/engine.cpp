@@ -263,6 +263,24 @@ bool Engine::is_generate_spirv_debug_info_enabled() const {
 	return generate_spirv_debug_info;
 }
 
+bool Engine::is_extra_gpu_memory_tracking_enabled() const {
+	return extra_gpu_memory_tracking;
+}
+
+#if defined(DEBUG_ENABLED) || defined(DEV_ENABLED)
+bool Engine::is_accurate_breadcrumbs_enabled() const {
+	return accurate_breadcrumbs;
+}
+#endif
+
+void Engine::set_print_to_stdout(bool p_enabled) {
+	CoreGlobals::print_line_enabled = p_enabled;
+}
+
+bool Engine::is_printing_to_stdout() const {
+	return CoreGlobals::print_line_enabled;
+}
+
 void Engine::set_print_error_messages(bool p_enabled) {
 	CoreGlobals::print_error_enabled = p_enabled;
 }

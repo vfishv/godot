@@ -30,9 +30,7 @@
 
 #include "button.h"
 
-#include "core/string/translation.h"
 #include "scene/theme/theme_db.h"
-#include "servers/rendering_server.h"
 
 Size2 Button::get_minimum_size() const {
 	Ref<Texture2D> _icon = icon;
@@ -298,19 +296,12 @@ void Button::_notification(int p_what) {
 					}
 				} break;
 				case DRAW_HOVER_PRESSED: {
-					// Edge case for CheckButton and CheckBox.
-					if (has_theme_stylebox("hover_pressed")) {
-						if (has_theme_color(SNAME("font_hover_pressed_color"))) {
-							font_color = theme_cache.font_hover_pressed_color;
-						}
-						if (has_theme_color(SNAME("icon_hover_pressed_color"))) {
-							icon_modulate_color = theme_cache.icon_hover_pressed_color;
-						}
-
-						break;
+					font_color = theme_cache.font_hover_pressed_color;
+					if (has_theme_color(SNAME("icon_hover_pressed_color"))) {
+						icon_modulate_color = theme_cache.icon_hover_pressed_color;
 					}
-				}
-					[[fallthrough]];
+
+				} break;
 				case DRAW_PRESSED: {
 					if (has_theme_color(SNAME("font_pressed_color"))) {
 						font_color = theme_cache.font_pressed_color;
@@ -437,6 +428,9 @@ void Button::_notification(int p_what) {
 				text_buf->set_alignment(align_rtl_checked);
 
 				float text_buf_width = Math::ceil(MAX(1.0f, drawable_size_remained.width)); // The space's width filled by the text_buf.
+				if (autowrap_mode != TextServer::AUTOWRAP_OFF && !Math::is_equal_approx(text_buf_width, text_buf->get_width())) {
+					update_minimum_size();
+				}
 				text_buf->set_width(text_buf_width);
 
 				Point2 text_ofs;

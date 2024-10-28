@@ -72,6 +72,10 @@ private:
 	bool abort_on_gpu_errors = false;
 	bool use_validation_layers = false;
 	bool generate_spirv_debug_info = false;
+	bool extra_gpu_memory_tracking = false;
+#if defined(DEBUG_ENABLED) || defined(DEV_ENABLED)
+	bool accurate_breadcrumbs = false;
+#endif
 	int32_t gpu_idx = -1;
 
 	uint64_t _process_frames = 0;
@@ -127,6 +131,9 @@ public:
 	void set_time_scale(double p_scale);
 	double get_time_scale() const;
 
+	void set_print_to_stdout(bool p_enabled);
+	bool is_printing_to_stdout() const;
+
 	void set_print_error_messages(bool p_enabled);
 	bool is_printing_error_messages() const;
 	void print_header(const String &p_string) const;
@@ -181,6 +188,10 @@ public:
 	bool is_abort_on_gpu_errors_enabled() const;
 	bool is_validation_layers_enabled() const;
 	bool is_generate_spirv_debug_info_enabled() const;
+	bool is_extra_gpu_memory_tracking_enabled() const;
+#if defined(DEBUG_ENABLED) || defined(DEV_ENABLED)
+	bool is_accurate_breadcrumbs_enabled() const;
+#endif
 	int32_t get_gpu_index() const;
 
 	void increment_frames_drawn();
